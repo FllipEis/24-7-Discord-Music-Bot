@@ -2,5 +2,7 @@
   "TOKEN": "YOUR TOKEN",
   "CHANNEL": "VOICE CHANNEL ID",
   "STATUS": "YOUR BOT STATUS",
-  "LIVE": "https://www.youtube.com/watch?v=21qNxnCS8WU"
+  "LIVE": "YOUR STREAM URL",
+  "VOLUME": 100
 }
+

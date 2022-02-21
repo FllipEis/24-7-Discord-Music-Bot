@@ -1,7 +1,4 @@
-const { CHANNEL, STATUS, LIVE } = require("../config.json");
-const ytdl = require("ytdl-core");
-let broadcast = null;
-let interval = null;
+const { CHANNEL, STATUS, LIVE, VOLUME } = require("../config.json");
 
 module.exports = async (client, process) => {
   client.user.setActivity(STATUS || "Radio");
@@ -20,27 +17,11 @@ module.exports = async (client, process) => {
     );
     process.exit(1);
   }
-  broadcast = client.voice.createBroadcast();
-  // Play the radio
-  stream = ytdl(LIVE);
-  stream.on("error", console.error);
-  broadcast.play(stream);
-  // Make interval so radio will automatically reconnect to YT every 30 minute because YT will change the raw url every 30m/1 Hour
-  if (!interval) {
-    interval = setInterval(async function () {
-      try {
-        if (stream && !stream.ended) stream.destroy();
-        stream = ytdl(LIVE, { highWaterMark: 100 << 150 });
-        stream.on("error", console.error);
-        broadcast.play(stream);
-      } catch (e) {
-        return;
-      }
-    }, 1800000);
-  }
+
   try {
     const connection = await channel.join();
-    connection.play(broadcast);
+    connection.play(LIVE);
+    connection.volume = VOLUME;
   } catch (error) {
     console.error(error);
   }
@@ -53,7 +34,8 @@ module.exports = async (client, process) => {
       if (!channel) return;
       try {
         const connection = await channel.join();
-        connection.play(broadcast);
+        connection.play(LIVE);
+        connection.volume = VOLUME;
       } catch (error) {
         console.error(error);
       }
