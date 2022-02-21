@@ -1,6 +1,5 @@
 // import config files
-const { TOKEN, CHANNEL, LIVE } = require("./config.json");
-const ytdl = require("ytdl-core");
+const { TOKEN, CHANNEL } = require("./config.json");
 
 // import events loader and node event handler functions
 const { loadEvents } = require("./utility/loadEvents");
@@ -15,14 +14,10 @@ const client = new Client();
 if (!TOKEN) {
   console.error("Please provide a valid Discord Bot Token.");
   process.exit(1);
-} else if (!CHANNEL || Number(CHANNEL) == NaN) {
+} else if (!CHANNEL || isNaN(Number(CHANNEL))) {
   console.log("Please provide a valid channel ID.");
   process.exit(1);
-} else if (!ytdl.validateURL(LIVE)) {
-  console.log("Please provide a valid Youtube URL.");
-  process.exit(1);
 }
-
 // login
 client.login(TOKEN).then(() => {
   console.log(` Successfully logged in as: ${client.user.username}#${client.user.discriminator}`);
